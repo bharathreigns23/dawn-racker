@@ -352,11 +352,15 @@ h1 {
 .btn-primary {
     background-color: var(--color-primary);
     color: white;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 8px;
     padding: 10px 16px;
     font-size: 1rem;
     cursor: pointer;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: background-color 0.2s, transform 0.1s;
 }
 
@@ -634,3 +638,61 @@ tbody tr:last-child td {
 }
 
 
+
+/* Daily Done Row */
+.daily-done-row td {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    font-weight: bold;
+    color: white;
+}
+
+/* Gray out before first tick */
+.before-first-tick {
+    background-color: rgba(128, 128, 128, 0.15) !important;
+}
+
+/* Secondary Button Style */
+.btn-secondary {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, transform 0.1s;
+    margin: 0;
+}
+.btn-secondary:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+:root {
+    --color-missed: #f8c8c8; /* softer red */
+}
+[data-theme='dark'] {
+    --color-missed: #522b2b; /* softer red for dark mode */
+}
+
+/* Today unticked light */
+td.today-col:not(.ticked) {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+[data-theme='dark'] td.today-col:not(.ticked) {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Delete Button changes */
+.delete-btn {
+    width: 20px !important;
+    height: 20px !important;
+    opacity: 0.4 !important;
+}
+.delete-btn:hover {
+    opacity: 1 !important;
+    color: white !important;
+    background-color: #ff4444 !important;
+}

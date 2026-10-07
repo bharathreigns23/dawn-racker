@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dawn-cache-v2';
+const CACHE_NAME = 'dawn-cache-v8';
 const urlsToCache = [
   './',
   './index.html',
@@ -37,3 +37,8 @@ self.addEventListener('fetch', event => {
     fetch(event.request).catch(() => caches.match(event.request))
   );
 });
+
+
+
+
+

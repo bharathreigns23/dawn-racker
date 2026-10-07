@@ -376,6 +376,7 @@ function render() {
     table.appendChild(trHead);
     
     const trDaily = document.createElement('tr');
+    trDaily.className = 'daily-done-row';
     const tdDailyLabel = document.createElement('td');
     tdDailyLabel.textContent = 'Daily Done %';
     tdDailyLabel.className = 'habit-name-col';
@@ -422,7 +423,11 @@ function render() {
         btnDelete.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
         btnDelete.className = 'delete-btn';
         btnDelete.title = "Delete Habit";
-        btnDelete.addEventListener('click', () => deleteHabit(habit.id));
+        btnDelete.addEventListener('click', () => {
+            if (confirm("Delete this habit?")) {
+                deleteHabit(habit.id);
+            }
+        });
         
         nameWrapper.appendChild(spanName);
         nameWrapper.appendChild(btnDelete);
@@ -436,17 +441,23 @@ function render() {
         tdStreak.style.fontSize = '0.9rem';
         tr.appendChild(tdStreak);
         
+        const allHabitKeys = Object.keys(state.ticks).filter(k => k.startsWith(habit.id + '-'));
+        const firstTickDate = allHabitKeys.length > 0 ? allHabitKeys.sort()[0].split('-').slice(1).join('-') : null;
+        
         for (let d = 1; d <= days; d++) {
             const td = document.createElement('td');
             const dateString = formatDateString(year, month, d);
             const isTicked = state.ticks[`${habit.id}-${dateString}`];
             const future = isFutureDay(year, month, d);
             const past = isPastDay(year, month, d);
+            const beforeFirstTick = firstTickDate && dateString < firstTickDate;
             
             if (isToday(year, month, d)) td.classList.add('today-col');
             
             if (isTicked) {
                 td.classList.add('ticked');
+            } else if (beforeFirstTick) {
+                td.classList.add('before-first-tick');
             } else if (past) {
                 td.classList.add('unticked-past');
             } else if (future) {
@@ -477,6 +488,13 @@ function render() {
         
         table.appendChild(tr);
     });
+
+    setTimeout(() => {
+        const todayCol = document.querySelector('.today-col');
+        if (todayCol) {
+            todayCol.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+    }, 100);
 }
 
 // --- Event Listeners ---
@@ -620,8 +638,8 @@ function renderChart() {
             datasets: [{
                 label: 'Daily Completion %',
                 data: data,
-                borderColor: '#2e9e5b',
-                backgroundColor: 'rgba(46, 158, 91, 0.2)',
+                borderColor: '#8e44ad',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
                 borderWidth: 2,
                 fill: true,
                 tension: 0.4
@@ -795,3 +813,7 @@ render = function() {
 
 // Initial update
 updateHunterSystem();
+
+// --- Chidori Effect ---
+
+
